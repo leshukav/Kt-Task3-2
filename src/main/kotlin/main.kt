@@ -1,116 +1,142 @@
-const val TYPE_1 = "Maestro"
-const val TYPE_2 = "MasterCard"
-const val TYPE_3 = "VISA"
-const val TYPE_4 = "Мир"
-const val TYPE_5 = "VK Pay"
-const val MAXTRANSLATE_TYPE1_4 = 150_000
-const val NOCOMMISSION_TYPE1_2 = 75_000
-const val FIXCOMMISSION_TYPE1_2 = 20
-const val COMMISSIONPERCENTAGE_TYPE1_2 = 0.006
-const val MAXMONTHOFTRANSLATE_TYPE1_4 = 600_000
-const val FIXCOMMISSION_TYPE3_4 = 35
-const val COMMISSIONPERCENTAGE_TYPE3_4 = 0.0075
-const val COMMISSIONPERCENTAGE_TYPE5 = 0
-const val MAXAMOUNT_TYPE5 = 15_000
-const val MAXMONTH_TYPE5 = 400_000
-var translateMonthType1 = 0
-var translateMonthType2 = 0
-var translateMonthType3 = 0
-var translateMonthType4 = 0
-var translateMonthType5 = 0
+const val MAESTRO = "Maestro"
+const val MASTERCARD = "MasterCard"
+const val VISA = "VISA"
+const val WORLD = "Мир"
+const val VK_PAY = "VK Pay"
+const val MAXTRANSLATE_MAESTRO = 150_000
+const val MAXTRANSLATE_MASTERCARD = 150_000
+const val MAXTRANSLATE_VISA = 150_000
+const val MAXTRANSLATE_WORD = 150_000
+const val NOCOMMISSION_MAESTRO = 75_000
+const val NOCOMMISSION_MASTERCARD = 75_000
+const val FIXCOMMISSION_MAESTRO = 20
+const val FIXCOMMISSION_MASTERCARD = 20
+const val COMMISSIONPERCENTAGE_MAESTRO = 0.006
+const val COMMISSIONPERCENTAGE_MASTERCARD = 0.006
+const val MAXMONTHOFTRANSLATE_MAESTRO = 600_000
+const val MAXMONTHOFTRANSLATE_MASTERCARD = 600_000
+const val MAXMONTHOFTRANSLATE_VISA = 600_000
+const val MAXMONTHOFTRANSLATE_WORD = 600_000
+const val FIXCOMMISSION_VISA = 35
+const val FIXCOMMISSION_WORD = 35
+const val COMMISSIONPERCENTAGE_VISA = 0.0075
+const val COMMISSIONPERCENTAGE_WORD = 0.0075
+const val COMMISSIONPERCENTAGE_VK_PAY = 0
+
+const val MAXAMOUNT_VK_PAY = 15_000
+const val MAXMONTH_VK_PAY = 400_000
+var translateMonthMAESTRO = 0
+var translateMonthMASTERCARD = 0
+var translateMonthVISA = 0
+var translateMonthWORLD = 0
+var translateMonthVK_PAY = 0
 
 fun main() {
 
-    printTranslate(TYPE_1, 40_000)
-    printTranslate(TYPE_1, 100_000)
-    printTranslate(TYPE_1, 500_000)
-    printTranslate(TYPE_2, 200_000)
-    printTranslate(TYPE_2, 300_000)
-    printTranslate(TYPE_2, 75_000)
-    printTranslate(TYPE_3, 10_000)
-    printTranslate(TYPE_3, 140_000)
-    printTranslate(TYPE_4, 20_000)
-    printTranslate(TYPE_4, 340_000)
-    printTranslate(TYPE_5, 2_000)
-    printTranslate(TYPE_5, 34_000)
+    printTranslate(MAESTRO, 40_000)
+    printTranslate(MAESTRO, 100_000)
+    printTranslate(MAESTRO, 500_000)
+    printTranslate(MASTERCARD, 200_000)
+    printTranslate(MASTERCARD, 300_000)
+    printTranslate(MASTERCARD, 75_000)
+    printTranslate(VISA, 10_000)
+    printTranslate(VISA, 140_000)
+    printTranslate(WORLD, 20_000)
+    printTranslate(WORLD, 340_000)
+    printTranslate(VK_PAY, 2_000)
+    printTranslate(VK_PAY, 34_000)
 
 }
 
-fun printTranslate(type: String = TYPE_5, translate: Int) {
+fun printTranslate(type: String = VK_PAY, translate: Int) {
     when (type) {
-        TYPE_1 -> {
-            if ((translateMonthType1 + translate) > MAXMONTHOFTRANSLATE_TYPE1_4) {
-                println("Превышен лимит переводов $MAXMONTHOFTRANSLATE_TYPE1_4 в месяц по карте $type  перевод  не возможен")
-            } else if (translate < MAXTRANSLATE_TYPE1_4) {
+        MAESTRO -> {
+            if (calcCommission(type, translateMonthMAESTRO, translate) == -100) {
+                println("Превышен лимит переводов $MAXMONTHOFTRANSLATE_MAESTRO в месяц по карте $type  перевод  не возможен")
+            } else if (translate < MAXTRANSLATE_MAESTRO) {
                 println("#################################################")
                 println("Сумма перевода по карте: $type  $translate ")
-                println("Комиссия: ${calcCommission(type, translate)}")
-                translateMonthType1 += translate
-                println("Сумма предыдущих переводов в этом месяце: $translateMonthType1")
-            } else println("Перевод $translate не возможен! превышен лимит $MAXTRANSLATE_TYPE1_4")
+                println("Комиссия: ${calcCommission(type, translateMonthMAESTRO, translate)}")
+                translateMonthMAESTRO += translate
+                println("Сумма предыдущих переводов в этом месяце: $translateMonthMAESTRO")
+            } else println("Перевод $translate не возможен! превышен суточный лимит $MAXTRANSLATE_MAESTRO")
         }
-        TYPE_2 -> {
-            if ((translateMonthType2 + translate) > MAXMONTHOFTRANSLATE_TYPE1_4) {
-                println("Превышен лимит переводов $MAXTRANSLATE_TYPE1_4 в месяц по карте $type  перевод  не возможен")
-            } else if (translate < MAXTRANSLATE_TYPE1_4) {
+        MASTERCARD -> {
+            if (calcCommission(type, translateMonthMASTERCARD, translate) == -100) {
+                println("Превышен лимит переводов $MAXTRANSLATE_MASTERCARD в месяц по карте $type  перевод  не возможен")
+            } else if (translate < MAXTRANSLATE_MASTERCARD) {
                 println("#################################################")
                 println("Сумма перевода по карте: $type  $translate ")
-                println("Комиссия: ${calcCommission(type, translate)}")
-                translateMonthType2 += translate
-                println("Сумма предыдущих переводов в этом месяце: $translateMonthType2")
-            } else println("Перевод $translate не возможен! превышен лимит $MAXTRANSLATE_TYPE1_4")
+                println("Комиссия: ${calcCommission(type, translateMonthMASTERCARD, translate)}")
+                translateMonthMASTERCARD += translate
+                println("Сумма предыдущих переводов в этом месяце: $translateMonthMASTERCARD")
+            } else println("Перевод $translate не возможен! превышен суточный лимит $MAXTRANSLATE_MASTERCARD")
         }
-        TYPE_3 -> {
-            if ((translateMonthType3 + translate) > MAXMONTHOFTRANSLATE_TYPE1_4) {
-                println("Превышен лимит переводов $MAXTRANSLATE_TYPE1_4 в месяц по карте $type  перевод  не возможен")
-            } else if (translate < MAXTRANSLATE_TYPE1_4) {
+        VISA -> {
+            if (calcCommission(type, translateMonthVISA, translate) == -100) {
+                println("Превышен лимит переводов $MAXTRANSLATE_VISA в месяц по карте $type  перевод  не возможен")
+            } else if (translate < MAXTRANSLATE_VISA) {
                 println("#################################################")
                 println("Сумма перевода по карте: $type  $translate ")
-                println("Комиссия: ${calcCommission(type, translate)}")
-                translateMonthType3 += translate
-                println("Сумма предыдущих переводов в этом месяце: $translateMonthType3")
-            } else println("Перевод $translate не возможен! превышен лимит $MAXTRANSLATE_TYPE1_4")
+                println("Комиссия: ${calcCommission(type, translateMonthVISA, translate)}")
+                translateMonthVISA += translate
+                println("Сумма предыдущих переводов в этом месяце: $translateMonthVISA")
+            } else println("Перевод $translate не возможен! превышен суточный лимит $MAXTRANSLATE_VISA")
         }
-        TYPE_4 -> {
-            if ((translateMonthType4 + translate) > MAXMONTHOFTRANSLATE_TYPE1_4) {
-                println("Превышен лимит переводов $MAXTRANSLATE_TYPE1_4 в месяц по карте $type  перевод  не возможен")
-            } else if (translate < MAXTRANSLATE_TYPE1_4) {
+        WORLD -> {
+            if (calcCommission(type, translateMonthWORLD, translate) == -100) {
+                println("Превышен лимит переводов $MAXTRANSLATE_WORD в месяц по карте $type  перевод  не возможен")
+            } else if (translate < MAXTRANSLATE_WORD) {
                 println("#################################################")
                 println("Сумма перевода по карте: $type  $translate ")
-                println("Комиссия: ${calcCommission(type, translate)}")
-                translateMonthType4 += translate
-                println("Сумма предыдущих переводов в этом месяце: $translateMonthType4")
-            } else println("Перевод $translate не возможен! превышен лимит $MAXTRANSLATE_TYPE1_4")
+                println("Комиссия: ${calcCommission(type, translateMonthWORLD, translate)}")
+                translateMonthWORLD += translate
+                println("Сумма предыдущих переводов в этом месяце: $translateMonthWORLD")
+            } else println("Перевод $translate не возможен! превышен суточный лимит $MAXTRANSLATE_WORD")
         }
-        TYPE_5 -> {
-            if ((translateMonthType5 + translate) > MAXMONTH_TYPE5) {
-                println("Превышен лимит переводов $MAXMONTH_TYPE5 в месяц по карте $type  перевод  не возможен")
-            } else if (translate < MAXAMOUNT_TYPE5) {
+        VK_PAY -> {
+            if (calcCommission(type, translateMonthVK_PAY, translate) == -100) {
+                println("Превышен лимит переводов $MAXMONTH_VK_PAY в месяц по карте $type  перевод  не возможен")
+            } else if (translate < MAXAMOUNT_VK_PAY) {
                 println("#################################################")
                 println("Сумма перевода по карте: $type  $translate ")
-                println("Комиссия: ${calcCommission(type, translate)}")
-                translateMonthType5 += translate
-                println("Сумма предыдущих переводов в этом месяце: $translateMonthType5")
-            } else println("Перевод $translate не возможен! превышен лимит $MAXAMOUNT_TYPE5")
+                println("Комиссия: ${calcCommission(type, translateMonthVK_PAY, translate)}")
+                translateMonthVK_PAY += translate
+                println("Сумма предыдущих переводов в этом месяце: $translateMonthVK_PAY")
+            } else println("Перевод $translate не возможен! превышен суточный лимит $MAXAMOUNT_VK_PAY")
         }
     }
 
 
 }
 
-fun calcCommission(type: String, translate: Int): Int {
+fun calcCommission(type: String = VK_PAY, translateMonth: Int = 0, translate: Int): Int {
     when (type) {
-        TYPE_1, TYPE_2 -> {
-            if ((translate) in (1..NOCOMMISSION_TYPE1_2)) return 0
-            else return (FIXCOMMISSION_TYPE1_2 + COMMISSIONPERCENTAGE_TYPE1_2 * translate).toInt()
+        MAESTRO -> {
+            return if (translateMonth + translate > MAXMONTHOFTRANSLATE_MAESTRO) -100
+            else if ((translate) in (1..NOCOMMISSION_MAESTRO)) 0
+            else (FIXCOMMISSION_MAESTRO + COMMISSIONPERCENTAGE_MAESTRO * translate).toInt()
         }
-        TYPE_3, TYPE_4 -> {
-            if (COMMISSIONPERCENTAGE_TYPE3_4 * translate > FIXCOMMISSION_TYPE3_4)
-                return (COMMISSIONPERCENTAGE_TYPE3_4 * translate).toInt()
-            else return FIXCOMMISSION_TYPE3_4
+        MASTERCARD -> {
+            return if (translateMonth + translate > MAXMONTHOFTRANSLATE_MASTERCARD) -100
+            else if ((translate) in (1..NOCOMMISSION_MASTERCARD)) 0
+            else (FIXCOMMISSION_MASTERCARD + COMMISSIONPERCENTAGE_MASTERCARD * translate).toInt()
         }
-        TYPE_5 -> {
-            return 0
+        VISA -> {
+            return if (translateMonth + translate > MAXMONTHOFTRANSLATE_VISA) -100
+            else if (COMMISSIONPERCENTAGE_VISA * translate > FIXCOMMISSION_VISA)
+                (COMMISSIONPERCENTAGE_VISA * translate).toInt()
+            else FIXCOMMISSION_VISA
+        }
+        WORLD -> {
+            return if (translateMonth + translate > MAXMONTHOFTRANSLATE_WORD) -100
+            else if (COMMISSIONPERCENTAGE_WORD * translate > FIXCOMMISSION_WORD)
+                (COMMISSIONPERCENTAGE_WORD * translate).toInt()
+            else FIXCOMMISSION_WORD
+        }
+        VK_PAY -> {
+            return if (translateMonth + translate > MAXMONTH_VK_PAY) -100
+            else 0
         }
     }
     return 0
